@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Technical Skills Dashboard — Vijay Kumar Yadav</title>
+  <meta name="description" content="Vijay Kumar Yadav is a Quality Control Engineer at AMSYS IT Service Pvt Ltd, Noida, working on planning and design of the AT&T F2 Fiber project.">
+  <meta name="author" content="Vijay Kumar Yadav">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@600;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="styles.css?v=5">
+  <script>
+    /* Apply the saved theme before first paint (no flash). Light is default. */
+    try { var t = localStorage.getItem('vijay267-theme'); document.documentElement.setAttribute('data-theme', (t === 'dark' || t === 'light') ? t : 'light'); }
+    catch (e) { document.documentElement.setAttribute('data-theme', 'light'); }
+  </script>
+</head>
+<body>
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+  <div id="scroll-progress" aria-hidden="true"><div></div></div>
+
+  <div class="mobile-topbar">
+    <button type="button" id="menu-toggle" class="menu-toggle" aria-label="Open menu" title="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <span class="mobile-brand">Vijay Yadav</span>
+  </div>
+  <div class="sidebar-backdrop" id="sidebar-backdrop" aria-hidden="true"></div>
+
+
+  <header class="site-header">
+    <div class="container site-header-inner">
+      <div class="header-actions">
+        <nav class="page-nav" aria-label="Pages">
+          <a href="index.html" class="pill"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span class="nav-label">Home</span></a>
+          <a href="experience.html" class="pill"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg><span class="nav-label">Experience</span></a>
+          <a href="case-studies.html" class="pill"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><span class="nav-label">Case Studies</span></a>
+          <a href="skills.html" class="pill active"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span class="nav-label">Skills</span></a>
+          <a href="education.html" class="pill"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span class="nav-label">Education</span></a>
+          <a href="https://www.linkedin.com/in/vijaykryadav" target="_blank" rel="noreferrer" class="pill"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg><span class="nav-label">LinkedIn</span></a>
+          <div class="resume-menu">
+            <button type="button" class="pill" aria-haspopup="true" aria-expanded="false"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg><span class="nav-label">Resume</span> <span class="chev">&#9662;</span></button>
+            <div class="menu"><div class="menu-inner">
+              <a href="downloads/vijay-kumar-yadav-resume.pdf" download="Vijay-Kumar-Yadav-Resume.pdf">PDF</a>
+              <a href="downloads/vijay-kumar-yadav-resume.docx" download="Vijay-Kumar-Yadav-Resume.docx">Word</a>
+            </div></div>
+          </div>
+          <a href="contact.html" class="pill"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2-2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span class="nav-label">Contact</span></a>
+        </nav>
+        <button type="button" id="theme-toggle" class="theme-toggle" aria-label="Switch to dark mode" title="Dark mode"></button>
+        <button type="button" id="app-update-btn" class="app-update-btn" aria-label="Check for app update" title="Check for app update" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+        <button type="button" id="sidebar-toggle" class="sidebar-toggle" aria-label="Minimise sidebar" title="Minimise sidebar"></button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container page-section">
+      <div class="skills-head">
+        <p class="section-kicker">Technical arsenal</p>
+        <h2 style="margin-top:0.5rem">Interactive Skills Dashboard</h2>
+        <p class="section-lead">QC Engineering · Fiber &amp; Telecom Design — the tools I use to catch design errors before they reach the field. Tap any card to expand it.</p>
+      </div>
+
+      <!-- Fiber & Telecom Design workflow -->
+      <section aria-label="Design workflow" class="workflow">
+        <h3>How the work flows</h3>
+        <div class="workflow-grid">
+          <div class="workflow-step">
+            <div class="workflow-card hover-lift">
+              <div class="top">
+                <span class="workflow-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12h4l2.5-7 4 14 2.5-7H22" /></svg></span>
+                <span class="workflow-num">01</span>
+              </div>
+              <h4>Fiber Design</h4>
+              <p>End-to-end FTTH planning — routes, drafting and network optimization.</p>
+              <span aria-hidden="true" class="workflow-arrow">→</span>
+            </div>
+            <div aria-hidden="true" class="workflow-arrow-down">↓</div>
+          </div>
+          <div class="workflow-step">
+            <div class="workflow-card hover-lift">
+              <div class="top">
+                <span class="workflow-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2" /><path d="M9 4a3 3 0 0 1 6 0 M9 13l2 2 4-4" /></svg></span>
+                <span class="workflow-num">02</span>
+              </div>
+              <h4>Design Validation</h4>
+              <p>Packages checked against AT&amp;T guidelines before they move ahead.</p>
+              <span aria-hidden="true" class="workflow-arrow">→</span>
+            </div>
+            <div aria-hidden="true" class="workflow-arrow-down">↓</div>
+          </div>
+          <div class="workflow-step">
+            <div class="workflow-card hover-lift">
+              <div class="top">
+                <span class="workflow-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="M16.5 16.5L21 21 M8.5 11l1.8 1.8 3.2-3.6" /></svg></span>
+                <span class="workflow-num">03</span>
+              </div>
+              <h4>Quality Checking</h4>
+              <p>Designs, maps and survey records verified; QC comments fixed, not ignored.</p>
+              <span aria-hidden="true" class="workflow-arrow">→</span>
+            </div>
+            <div aria-hidden="true" class="workflow-arrow-down">↓</div>
+          </div>
+          <div class="workflow-step">
+            <div class="workflow-card hover-lift">
+              <div class="top">
+                <span class="workflow-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="10" r="6" /><path d="M8.5 14.5L7 21l5-2.5L17 21l-1.5-6.5 M9.5 10l1.8 1.8 3.2-3.6" /></svg></span>
+                <span class="workflow-num">04</span>
+              </div>
+              <h4>Final Approval</h4>
+              <p>Only clean, verified designs handed to field teams.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Design Tools -->
+      <section aria-label="Design Tools" class="skill-cat">
+        <div class="skill-cat-head">
+          <div><h3>Design Tools</h3><p>Drafting, mapping and geospatial design</p></div>
+          <span class="skill-count">2</span>
+        </div>
+        <div class="skill-grid">
+          <article class="skill-card">
+            <button type="button" class="skill-head" aria-expanded="false">
+              <div class="row">
+                <span class="skill-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5 9-5z" /><path d="M3 13l9 5 9-5" /></svg></span>
+                <span aria-hidden="true" class="chev">&#9662;</span>
+              </div>
+              <h4>GIS</h4>
+              <p>Mapping &amp; spatial analysis</p>
+            </button>
+            <div class="collapse"><div class="collapse-inner"><div class="skill-body">
+              <p class="lbl">Used in</p>
+              <div class="stage-chips"><span>Fiber Design</span></div>
+            </div></div></div>
+          </article>
+          <article class="skill-card">
+            <button type="button" class="skill-head" aria-expanded="false">
+              <div class="row">
+                <span class="skill-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M3 12h18 M12 3c3 3.6 3 14.4 0 18 M12 3c-3 3.6-3 14.4 0 18" /></svg></span>
+                <span aria-hidden="true" class="chev">&#9662;</span>
+              </div>
+              <h4>Google Earth Pro</h4>
+              <p>KMZ overlays &amp; route checks</p>
+            </button>
+            <div class="collapse"><div class="collapse-inner"><div class="skill-body">
+              <p class="lbl">Used in</p>
+              <div class="stage-chips"><span>Fiber Design</span><span>Design Validation</span></div>
+            </div></div></div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Telecom Platforms -->
+      <section aria-label="Telecom Platforms" class="skill-cat">
+        <div class="skill-cat-head">
+          <div><h3>Telecom Platforms</h3><p>Carrier design, records and job platforms</p></div>
+          <span class="skill-count">4</span>
+        </div>
+        <div class="skill-grid">
+          <article class="skill-card">
+            <button type="button" class="skill-head" aria-expanded="false">
+              <div class="row">
+                <span class="skill-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="2.4" /><circle cx="18" cy="6" r="2.4" /><circle cx="12" cy="18" r="2.4" /><path d="M7.8 7.8l3 8 M16.2 7.8l-3 8 M8.4 6h7.2" /></svg></span>
+                <span aria-hidden="true" class="chev">&#9662;</span>
+              </div>
+              <h4>ARAMIS-DT</h4>
+              <p>Engineering design tool</p>
+            </button>
+            <div class="collapse"><div class="collapse-inner"><div class="skill-body">
+              <p class="lbl">Used in</p>
+              <div class="stage-chips"><span>Fiber Design</span><span>Design Validation</span></div>
+            </div></div></div>
+          </article>
+          <article class="skill-card">
+            <button type="button" class="skill-head" aria-expanded="false">
+              <div class="row">
+                <span class="skill-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3" /><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6" /><path d="M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3" /></svg></span>
+                <span aria-hidden="true" class="chev">&#9662;</span>
+              </div>
+              <h4>WALDO</h4>
+              <p>Design &amp; records system</p>
+            </button>
+            <div class="collapse"><div class="collapse-inner"><div class="skill-body">
+              <p class="lbl">Used in</p>
+              <div class="stage-chips"><span>Design Validation</span><span>Quality Checking</span></div>
+            </div></div></div>
+          </article>
+          <article class="skill-card">
+            <button type="button" class="skill-head" aria-expanded="false">
+              <div class="row">
+                <span class="skill-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2z" /><path d="M9 4v14 M15 6v14" /></svg></span>
+                <span aria-hidden="true" class="chev">&#9662;</span>
+              </div>
+              <h4>IQGEO</h4>
+              <p>Geospatial network design</p>
+            </button>
+            <div class="collapse"><div class="collapse-inner"><div class="skill-body">
+              <p class="lbl">Used in</p>
+              <div class="stage-chips"><span>Fiber Design</span></div>
+            </div></div></div>
+          </article>
+          <article class="skill-card">
+            <button type="button" class="skill-head" aria-expanded="false">
+              <div class="row">
+                <span class="skill-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 9.5h18 M6.5 7.2h.01 M9.5 7.2h.01" /></svg></span>
+                <span aria-hidden="true" class="chev">&#9662;</span>
+              </div>
+              <h4>BIC/BCL Portal</h4>
+              <p>Job &amp; records portal</p>
+            </button>
+            <div class="collapse"><div class="collapse-inner"><div class="skill-body">
+              <p class="lbl">Used in</p>
+              <div class="stage-chips"><span>Design Validation</span><span>Quality Checking</span></div>
+            </div></div></div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Productivity Tools -->
+      <section aria-label="Productivity Tools" class="skill-cat">
+        <div class="skill-cat-head">
+          <div><h3>Productivity Tools</h3><p>Trackers, reports and verification</p></div>
+          <span class="skill-count">2</span>
+        </div>
+        <div class="skill-grid">
+          <article class="skill-card">
+            <button type="button" class="skill-head" aria-expanded="false">
+              <div class="row">
+                <span class="skill-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2" /><path d="M3 10h18 M3 15h18 M10 10v10" /></svg></span>
+                <span aria-hidden="true" class="chev">&#9662;</span>
+              </div>
+              <h4>MS Excel</h4>
+              <p>Trackers &amp; QC reports</p>
+            </button>
+            <div class="collapse"><div class="collapse-inner"><div class="skill-body">
+              <p class="lbl">Used in</p>
+              <div class="stage-chips"><span>Quality Checking</span><span>Final Approval</span></div>
+            </div></div></div>
+          </article>
+          <article class="skill-card">
+            <button type="button" class="skill-head" aria-expanded="false">
+              <div class="row">
+                <span class="skill-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-5.6-7-11a7 7 0 0 1 14 0c0 5.4-7 11-7 11z" /><circle cx="12" cy="10" r="2.5" /></svg></span>
+                <span aria-hidden="true" class="chev">&#9662;</span>
+              </div>
+              <h4>Google Maps / Bing Maps</h4>
+              <p>Location verification</p>
+            </button>
+            <div class="collapse"><div class="collapse-inner"><div class="skill-body">
+              <p class="lbl">Used in</p>
+              <div class="stage-chips"><span>Design Validation</span><span>Quality Checking</span></div>
+            </div></div></div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Quality Control -->
+      <section aria-label="Quality Control" class="skill-cat">
+        <div class="skill-cat-head">
+          <div><h3>Quality Control</h3><p>Checks, standards and field-ready approval</p></div>
+          <span class="skill-count">3</span>
+        </div>
+        <div class="skill-grid">
+          <article class="skill-card">
+            <button type="button" class="skill-head" aria-expanded="false">
+              <div class="row">
+                <span class="skill-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12h4l2.5-7 4 14 2.5-7H22" /></svg></span>
+                <span aria-hidden="true" class="chev">&#9662;</span>
+              </div>
+              <h4>AT&amp;T F2 Fiber Design</h4>
+              <p>FTTH network planning &amp; design</p>
+            </button>
+            <div class="collapse"><div class="collapse-inner"><div class="skill-body">
+              <p class="lbl">Used in</p>
+              <div class="stage-chips"><span>Fiber Design</span><span>Quality Checking</span></div>
+            </div></div></div>
+          </article>
+          <article class="skill-card">
+            <button type="button" class="skill-head" aria-expanded="false">
+              <div class="row">
+                <span class="skill-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v6c0 4.6-3 7.6-7 9-4-1.4-7-4.4-7-9V6l7-3z" /><path d="M9 12l2 2 4-4" /></svg></span>
+                <span aria-hidden="true" class="chev">&#9662;</span>
+              </div>
+              <h4>Quality Control</h4>
+              <p>Catching design errors pre-field</p>
+            </button>
+            <div class="collapse"><div class="collapse-inner"><div class="skill-body">
+              <p class="lbl">Used in</p>
+              <div class="stage-chips"><span>Quality Checking</span><span>Final Approval</span></div>
+            </div></div></div>
+          </article>
+          <article class="skill-card">
+            <button type="button" class="skill-head" aria-expanded="false">
+              <div class="row">
+                <span class="skill-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z" /><path d="M14 3v4h4 M9 12h6 M9 16h6" /></svg></span>
+                <span aria-hidden="true" class="chev">&#9662;</span>
+              </div>
+              <h4>Survey Records (Plats)</h4>
+              <p>Plat maps &amp; ROW records</p>
+            </button>
+            <div class="collapse"><div class="collapse-inner"><div class="skill-body">
+              <p class="lbl">Used in</p>
+              <div class="stage-chips"><span>Quality Checking</span></div>
+            </div></div></div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Skill matrix -->
+      <section aria-label="Skill matrix" class="matrix">
+        <h3>Skill matrix</h3>
+        <p class="page-sub">Every skill, its category and proficiency tier at a glance.</p>
+        <div class="wrap">
+          <table>
+            <thead>
+              <tr><th scope="col">Skill</th><th scope="col">Category</th><th scope="col">Proficiency</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="skill-cell"><span class="skill-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5 9-5z" /><path d="M3 13l9 5 9-5" /></svg></span>GIS</span></td>
+                <td class="cat">Design Tools</td>
+                <td><span class="level-meter" title="Proficiency: Proficient"><span class="segs"><span class="seg on"></span><span class="seg on"></span><span class="seg"></span></span><span class="lbl">Proficient</span></span></td>
+              </tr>
+              <tr>
+                <td><span class="skill-cell"><span class="skill-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M3 12h18 M12 3c3 3.6 3 14.4 0 18 M12 3c-3 3.6-3 14.4 0 18" /></svg></span>Google Earth Pro</span></td>
+                <td class="cat">Design Tools</td>
+                <td><span class="level-meter" title="Proficiency: Proficient"><span class="segs"><span class="seg on"></span><span class="seg on"></span><span class="seg"></span></span><span class="lbl">Proficient</span></span></td>
+              </tr>
+              <tr>
+                <td><span class="skill-cell"><span class="skill-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="2.4" /><circle cx="18" cy="6" r="2.4" /><circle cx="12" cy="18" r="2.4" /><path d="M7.8 7.8l3 8 M16.2 7.8l-3 8 M8.4 6h7.2" /></svg></span>ARAMIS-DT</span></td>
+                <td class="cat">Telecom Platforms</td>
+                <td><span class="level-meter" title="Proficiency: Proficient"><span class="segs"><span class="seg on"></span><span class="seg on"></span><span class="seg"></span></span><span class="lbl">Proficient</span></span></td>
+              </tr>
+              <tr>
+                <td><span class="skill-cell"><span class="skill-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3" /><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6" /><path d="M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3" /></svg></span>WALDO</span></td>
+                <td class="cat">Telecom Platforms</td>
+                <td><span class="level-meter" title="Proficiency: Proficient"><span class="segs"><span class="seg on"></span><span class="seg on"></span><span class="seg"></span></span><span class="lbl">Proficient</span></span></td>
+              </tr>
+              <tr>
+                <td><span class="skill-cell"><span class="skill-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2z" /><path d="M9 4v14 M15 6v14" /></svg></span>IQGEO</span></td>
+                <td class="cat">Telecom Platforms</td>
+                <td><span class="level-meter" title="Proficiency: Proficient"><span class="segs"><span class="seg on"></span><span class="seg on"></span><span class="seg"></span></span><span class="lbl">Proficient</span></span></td>
+              </tr>
+              <tr>
+                <td><span class="skill-cell"><span class="skill-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 9.5h18 M6.5 7.2h.01 M9.5 7.2h.01" /></svg></span>BIC/BCL Portal</span></td>
+                <td class="cat">Telecom Platforms</td>
+                <td><span class="level-meter" title="Proficiency: Proficient"><span class="segs"><span class="seg on"></span><span class="seg on"></span><span class="seg"></span></span><span class="lbl">Proficient</span></span></td>
+              </tr>
+              <tr>
+                <td><span class="skill-cell"><span class="skill-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2" /><path d="M3 10h18 M3 15h18 M10 10v10" /></svg></span>MS Excel</span></td>
+                <td class="cat">Productivity Tools</td>
+                <td><span class="level-meter" title="Proficiency: Proficient"><span class="segs"><span class="seg on"></span><span class="seg on"></span><span class="seg"></span></span><span class="lbl">Proficient</span></span></td>
+              </tr>
+              <tr>
+                <td><span class="skill-cell"><span class="skill-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-5.6-7-11a7 7 0 0 1 14 0c0 5.4-7 11-7 11z" /><circle cx="12" cy="10" r="2.5" /></svg></span>Google Maps / Bing Maps</span></td>
+                <td class="cat">Productivity Tools</td>
+                <td><span class="level-meter" title="Proficiency: Proficient"><span class="segs"><span class="seg on"></span><span class="seg on"></span><span class="seg"></span></span><span class="lbl">Proficient</span></span></td>
+              </tr>
+              <tr>
+                <td><span class="skill-cell"><span class="skill-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12h4l2.5-7 4 14 2.5-7H22" /></svg></span>AT&amp;T F2 Fiber Design</span></td>
+                <td class="cat">Quality Control</td>
+                <td><span class="level-meter" title="Proficiency: Proficient"><span class="segs"><span class="seg on"></span><span class="seg on"></span><span class="seg"></span></span><span class="lbl">Proficient</span></span></td>
+              </tr>
+              <tr>
+                <td><span class="skill-cell"><span class="skill-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v6c0 4.6-3 7.6-7 9-4-1.4-7-4.4-7-9V6l7-3z" /><path d="M9 12l2 2 4-4" /></svg></span>Quality Control</span></td>
+                <td class="cat">Quality Control</td>
+                <td><span class="level-meter" title="Proficiency: Proficient"><span class="segs"><span class="seg on"></span><span class="seg on"></span><span class="seg"></span></span><span class="lbl">Proficient</span></span></td>
+              </tr>
+              <tr>
+                <td><span class="skill-cell"><span class="skill-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z" /><path d="M14 3v4h4 M9 12h6 M9 16h6" /></svg></span>Survey Records (Plats)</span></td>
+                <td class="cat">Quality Control</td>
+                <td><span class="level-meter" title="Proficiency: Proficient"><span class="segs"><span class="seg on"></span><span class="seg on"></span><span class="seg"></span></span><span class="lbl">Proficient</span></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">Tiers: Core · Proficient · Expert</p>
+      </section>
+    </div>
+  </main>
+
+  <div class="chat-root" id="chat-widget">
+    <div class="chat-panel" id="chat-panel" role="dialog" aria-label="Chat with Vijay's personal AI" hidden>
+      <div class="chat-head">
+        <div><p class="t">Chat with Vijay</p><p class="s">Vijay's personal AI — ask me anything</p></div>
+        <button type="button" id="chat-close" class="chat-close" aria-label="Close chat">×</button>
+      </div>
+      <div class="chat-log" id="chat-log">
+        <div class="chat-msg bot"><p>Hi! I'm Vijay's personal AI. Ask me anything!</p></div>
+      </div>
+      <form class="chat-form" id="chat-form">
+        <input type="text" id="chat-input" placeholder="Type your message…" aria-label="Type your message">
+        <button type="submit">Send</button>
+      </form>
+    </div>
+    <button type="button" id="chat-fab" class="chat-fab" aria-label="Open chat">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
+    </button>
+  </div>
+
+  <script src="app.js?v=12"></script>
+</body>
+</html>
