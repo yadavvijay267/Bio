@@ -251,35 +251,6 @@ main { min-height: 100vh; }
 .hero[data-sky="golden"] .sky { background: linear-gradient(180deg, #FDBA74 0%, #FDE68A 55%, #FED7AA 100%); }
 .hero[data-sky="dusk"] .sky { background: linear-gradient(180deg, #C084FC 0%, #F97316 55%, #FDBA74 100%); }
 .hero[data-sky="night"] .sky { background: linear-gradient(180deg, #0F172A 0%, #1E293B 60%, #334155 100%); }
-.sun-arc { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 1; }
-.sun {
-  position: absolute; width: 54px; height: 54px; border-radius: 50%;
-  background: radial-gradient(circle at 38% 35%, #FEF9C3 0%, #FDE047 35%, #F59E0B 70%, #EA580C 100%);
-  box-shadow: 0 0 24px 8px rgba(245, 158, 11, 0.55), 0 0 64px 24px rgba(245, 158, 11, 0.22);
-  transform: translate(-50%, 50%);
-  transition: left 60s linear, bottom 60s linear, background 60s linear, box-shadow 60s linear;
-}
-.sun.dawn {
-  background: radial-gradient(circle at 38% 35%, #FFEDD5 0%, #FDBA74 35%, #F97316 70%, #C2410C 100%);
-  box-shadow: 0 0 24px 8px rgba(249, 115, 22, 0.55), 0 0 64px 24px rgba(249, 115, 22, 0.22);
-}
-.sun.dusk {
-  background: radial-gradient(circle at 38% 35%, #FDE68A 0%, #FB923C 40%, #EA580C 75%, #9A3412 100%);
-  box-shadow: 0 0 24px 8px rgba(234, 88, 12, 0.55), 0 0 64px 24px rgba(234, 88, 12, 0.22);
-}
-.sun.moon {
-  background: radial-gradient(circle at 38% 35%, #F8FAFC 0%, #E2E8F0 45%, #CBD5E1 75%, #94A3B8 100%);
-  box-shadow: 0 0 20px 6px rgba(226, 232, 240, 0.45), 0 0 48px 18px rgba(226, 232, 240, 0.15);
-}
-.sun-label {
-  position: absolute; transform: translate(-50%, 0);
-  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.02em; white-space: nowrap;
-  color: var(--muted, #64748B);
-  background: color-mix(in oklab, var(--background) 55%, transparent);
-  border: 1px solid color-mix(in oklab, var(--border) 45%, transparent);
-  border-radius: 999px; padding: 0.15rem 0.55rem;
-  transition: left 60s linear, bottom 60s linear;
-}
 
 /* ------------------------------------------------------------------ hero (home) */
 .hero { position: relative; overflow: hidden; }

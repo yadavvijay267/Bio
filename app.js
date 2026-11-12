@@ -273,40 +273,12 @@
       return "night";
     }
     function updateSun(sunriseIso, sunsetIso) {
-      var sunEl = document.getElementById("sun");
-      var labelEl = document.getElementById("sun-label");
-      if (!sunEl || !labelEl) return;
       if (sunriseIso && sunsetIso) {
         sunTimes = { sunrise: new Date(sunriseIso), sunset: new Date(sunsetIso) };
       }
       ensureSunTimes();
       var now = new Date();
       var sr = sunTimes.sunrise, ss = sunTimes.sunset;
-      var isDay = now >= sr && now < ss;
-      var frac, cls, label;
-      if (isDay) {
-        frac = (now - sr) / (ss - sr);
-        cls = frac < 0.18 ? "dawn" : (frac > 0.82 ? "dusk" : "");
-        label = "🌇 Sunset " + fmtSunTime(ss);
-      } else {
-        // Night arc: moon rises at sunset, sets at next sunrise.
-        var nextSr = new Date(sr);
-        if (now >= ss) nextSr.setDate(nextSr.getDate() + 1);
-        var nightStart = now >= ss ? ss : new Date(sr.getTime() - 24 * 60 * 60 * 1000);
-        var nightEnd = now >= ss ? nextSr : sr;
-        frac = (now - nightStart) / (nightEnd - nightStart);
-        cls = "moon";
-        label = "🌅 Sunrise " + fmtSunTime(nextSr);
-      }
-      frac = Math.max(0, Math.min(1, frac));
-      var leftPct = 8 + frac * 84;
-      var bottomPct = 6 + Math.sin(frac * Math.PI) * 58;
-      sunEl.style.left = leftPct + "%";
-      sunEl.style.bottom = bottomPct + "%";
-      sunEl.className = "sun" + (cls ? " " + cls : "");
-      labelEl.style.left = leftPct + "%";
-      labelEl.style.bottom = Math.max(0, bottomPct - 13) + "%";
-      labelEl.textContent = label;
       // Sky + greeting follow the real time.
       var hero = document.getElementById("hero");
       if (hero) hero.setAttribute("data-sky", sunSky(now, sr, ss));
