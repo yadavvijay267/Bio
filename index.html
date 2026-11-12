@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@600;800&family=Plus+Jakarta+Sans:wght@400;500;600&family=Dancing+Script:wght@600;700&display=swap">
-  <link rel="stylesheet" href="styles.css?v=13">
+  <link rel="stylesheet" href="styles.css?v=14">
   <script>
     /* Apply the saved theme before first paint (no flash). Light is default. */
     try { var t = localStorage.getItem('vijay267-theme'); if (t === 'dark' || t === 'light') { document.documentElement.setAttribute('data-theme', t); } else { var h = new Date().getHours(); document.documentElement.setAttribute('data-theme', (h >= 18 || h < 5) ? 'dark' : 'light'); } var w = localStorage.getItem('vijay267-weather'); if (w) document.documentElement.setAttribute('data-weather', w); }
@@ -116,21 +116,6 @@
             <a href="contact.html" class="cta hover-lift ghost-gradient">Get in touch →</a>
           </aside>
         </div>
-        <div class="sun-controls" id="sun-controls">
-          <button type="button" id="sun-play" class="sun-btn" aria-label="Play time animation">▶</button>
-          <button type="button" id="sun-speed" class="sun-btn sun-speed" aria-label="Animation speed" title="Animation speed">10×</button>
-          <input type="range" id="sun-slider" min="0" max="1439" value="0" step="1" aria-label="Time of day">
-          <span class="sun-clock" id="sun-clock">--:--</span>
-          <button type="button" id="sun-live" class="sun-btn sun-live" aria-label="Back to live time">Live</button>
-          <span class="sun-chips" id="sun-chips">
-            <button type="button" data-jump="sunrise">Suryoday</button>
-            <button type="button" data-jump="noon">Dopahar</button>
-            <button type="button" data-jump="golden">Golden Hour</button>
-            <button type="button" data-jump="sunset">Suryast</button>
-            <button type="button" data-jump="night">Raat</button>
-          </span>
-        </div>
-        <p class="sun-phase" id="sun-phase"></p>
       </div>
     </section>
 
@@ -163,6 +148,6 @@
     </button>
   </div>
 
-  <script src="app.js?v=20"></script>
+  <script src="app.js?v=21"></script>
 </body>
 </html>

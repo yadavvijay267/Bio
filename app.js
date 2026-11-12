@@ -246,26 +246,12 @@
         Math.round(w.wind) + ' km/h</span>' + sunStr;
     }
 
-    /* ------------------------------------------------ sun & moon arc (time-based, preview-style controls) */
+    /* ------------------------------------------------ sun & moon arc (time-based) */
     var sunTimes = null; // { sunrise: Date, sunset: Date }
-    var sunMode = "live"; // "live" = real clock, "sim" = slider / play time
-    var simMinutes = 0; // minutes since midnight in sim mode
-    var sunPlaying = false;
-    var sunSpeeds = [10, 30, 60]; // simulated minutes per real second (3 speeds)
-    var sunSpeedIdx = 0;
-    var sunTimer = null;
     function fmtSunTime(iso) {
       var d = new Date(iso);
       if (isNaN(d.getTime())) return iso;
       return d.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
-    }
-    function fmtClock(d) {
-      return d.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
-    }
-    function fmtCountdown(ms) {
-      var m = Math.max(0, Math.round(ms / 60000));
-      var h = Math.floor(m / 60);
-      return h > 0 ? h + "h " + (m % 60) + "m" : m + "m";
     }
     function ensureSunTimes() {
       if (sunTimes) return;
@@ -276,28 +262,15 @@
         sunset: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 18, 0, 0)
       };
     }
-    function getSunDisplayTime() {
-      if (sunMode === "sim") {
-        var t = new Date();
-        t.setHours(0, simMinutes, 0, 0);
-        return t;
-      }
-      return new Date();
-    }
-    function sunPhaseInfo(now, sr, ss) {
-      var dayMs = 24 * 60 * 60 * 1000;
-      var nextSr = new Date(sr);
-      if (now >= sr) nextSr.setDate(nextSr.getDate() + 1);
-      var prevSs = new Date(ss);
-      if (now < ss) prevSs.setDate(prevSs.getDate() - 1);
-      var goldenStart = new Date(ss.getTime() - 60 * 60 * 1000);
+    function sunSky(now, sr, ss) {
       var dawnEnd = new Date(sr.getTime() + 30 * 60 * 1000);
+      var goldenStart = new Date(ss.getTime() - 60 * 60 * 1000);
       var duskEnd = new Date(ss.getTime() + 30 * 60 * 1000);
-      if (now >= sr && now < dawnEnd) return { sky: "dawn", name: "Suryoday", next: { label: "Sunset", at: ss } };
-      if (now >= dawnEnd && now < goldenStart) return { sky: "day", name: now.getHours() < 12 ? "Subah" : "Dopahar", next: { label: "Sunset", at: ss } };
-      if (now >= goldenStart && now < ss) return { sky: "golden", name: "Golden Hour", next: { label: "Sunset", at: ss } };
-      if (now >= ss && now < duskEnd) return { sky: "dusk", name: "Suryast", next: { label: "Sunrise", at: nextSr } };
-      return { sky: "night", name: "Raat", next: { label: "Sunrise", at: nextSr } };
+      if (now >= sr && now < dawnEnd) return "dawn";
+      if (now >= dawnEnd && now < goldenStart) return "day";
+      if (now >= goldenStart && now < ss) return "golden";
+      if (now >= ss && now < duskEnd) return "dusk";
+      return "night";
     }
     function updateSun(sunriseIso, sunsetIso) {
       var sunEl = document.getElementById("sun");
@@ -307,9 +280,8 @@
         sunTimes = { sunrise: new Date(sunriseIso), sunset: new Date(sunsetIso) };
       }
       ensureSunTimes();
-      var now = getSunDisplayTime();
+      var now = new Date();
       var sr = sunTimes.sunrise, ss = sunTimes.sunset;
-      var info = sunPhaseInfo(now, sr, ss);
       var isDay = now >= sr && now < ss;
       var frac, cls, label;
       if (isDay) {
@@ -335,88 +307,13 @@
       labelEl.style.left = leftPct + "%";
       labelEl.style.bottom = Math.max(0, bottomPct - 13) + "%";
       labelEl.textContent = label;
-      // Sky + greeting follow the display time.
+      // Sky + greeting follow the real time.
       var hero = document.getElementById("hero");
-      if (hero) hero.setAttribute("data-sky", info.sky);
+      if (hero) hero.setAttribute("data-sky", sunSky(now, sr, ss));
       setGreeting(now.getHours());
-      var phaseEl = document.getElementById("sun-phase");
-      if (phaseEl) {
-        phaseEl.textContent = info.name + " · " + info.next.label + " " + fmtClock(info.next.at) +
-          " (" + fmtCountdown(info.next.at - now) + " me) · " + (sunMode === "live" ? "Live" : "Preview");
-      }
-      var clockEl2 = document.getElementById("sun-clock");
-      if (clockEl2) clockEl2.textContent = fmtClock(now);
-      var slider = document.getElementById("sun-slider");
-      if (slider && document.activeElement !== slider) {
-        slider.value = String(now.getHours() * 60 + now.getMinutes());
-      }
-      var liveBtn = document.getElementById("sun-live");
-      if (liveBtn) liveBtn.classList.toggle("active", sunMode === "live");
     }
-    function sunSetSim(minutes, autoplay) {
-      sunMode = "sim";
-      simMinutes = ((minutes % 1440) + 1440) % 1440;
-      if (autoplay) sunPlay(true); else sunPause();
-      updateSun(null, null);
-    }
-    function sunPlay(fromCurrent) {
-      var playBtn = document.getElementById("sun-play");
-      if (!fromCurrent && sunMode === "live") {
-        var now = new Date();
-        sunSetSim(now.getHours() * 60 + now.getMinutes(), false);
-      }
-      sunPlaying = true;
-      if (playBtn) playBtn.textContent = "⏸";
-      if (sunTimer) clearInterval(sunTimer);
-      sunTimer = setInterval(function () {
-        simMinutes = (simMinutes + sunSpeeds[sunSpeedIdx]) % 1440;
-        updateSun(null, null);
-      }, 1000);
-    }
-    function sunPause() {
-      sunPlaying = false;
-      var playBtn = document.getElementById("sun-play");
-      if (playBtn) playBtn.textContent = "▶";
-      if (sunTimer) { clearInterval(sunTimer); sunTimer = null; }
-    }
-    function sunGoLive() {
-      sunPause();
-      sunMode = "live";
-      updateSun(null, null);
-    }
-    (function wireSunControls() {
-      var playBtn = document.getElementById("sun-play");
-      var speedBtn = document.getElementById("sun-speed");
-      var slider = document.getElementById("sun-slider");
-      var liveBtn = document.getElementById("sun-live");
-      var chips = document.getElementById("sun-chips");
-      if (!playBtn || !slider) return;
-      playBtn.addEventListener("click", function () {
-        if (sunPlaying) sunPause(); else sunPlay(false);
-      });
-      if (speedBtn) speedBtn.addEventListener("click", function () {
-        sunSpeedIdx = (sunSpeedIdx + 1) % sunSpeeds.length;
-        speedBtn.textContent = sunSpeeds[sunSpeedIdx] + "×";
-      });
-      slider.addEventListener("input", function () {
-        sunSetSim(parseInt(slider.value, 10), false);
-      });
-      if (liveBtn) liveBtn.addEventListener("click", sunGoLive);
-      if (chips) chips.addEventListener("click", function (e) {
-        var btn = e.target.closest("button[data-jump]");
-        if (!btn) return;
-        ensureSunTimes();
-        var jump = btn.getAttribute("data-jump");
-        var sr = sunTimes.sunrise, ss = sunTimes.sunset;
-        if (jump === "sunrise") sunSetSim(sr.getHours() * 60 + sr.getMinutes(), false);
-        else if (jump === "noon") sunSetSim(12 * 60, false);
-        else if (jump === "golden") sunSetSim(ss.getHours() * 60 + ss.getMinutes() - 60, false);
-        else if (jump === "sunset") sunSetSim(ss.getHours() * 60 + ss.getMinutes(), false);
-        else if (jump === "night") sunSetSim(22 * 60, false);
-      });
-    })();
     updateSun(null, null);
-    setInterval(function () { if (sunMode === "live") updateSun(null, null); }, 60000);
+    setInterval(function () { updateSun(null, null); }, 60000);
 
     function loadWeather() {
       if (!weatherEl) return;
