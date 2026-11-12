@@ -235,15 +235,13 @@
       var placeStr = place.name +
         (place.admin1 ? ", " + place.admin1 : "") +
         (place.country ? ", " + place.country : "");
-      var sunStr = "";
       if (w.sunrise && w.sunset) {
-        sunStr = ' · <span class="muted">🌅 ' + fmtSunTime(w.sunrise) + ' · 🌇 ' + fmtSunTime(w.sunset) + '</span>';
         updateSun(w.sunrise, w.sunset);
       }
       weatherEl.innerHTML =
         info.icon + ' <span class="temp">' + Math.round(w.temp) + '°C</span> · ' + info.label +
         ' · <span class="muted">' + placeStr + ' · Humidity ' + w.humidity + '% · Wind ' +
-        Math.round(w.wind) + ' km/h</span>' + sunStr;
+        Math.round(w.wind) + ' km/h</span>';
     }
 
     /* ------------------------------------------------ sun & moon arc (time-based) */
