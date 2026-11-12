@@ -244,7 +244,14 @@ main { min-height: 100vh; }
 }
 
 /* ------------------------------------------------------------------ sun & moon arc (time-based) */
-.sun-arc { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+.sky { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; opacity: 0.5; transition: background 60s linear, opacity 60s linear; }
+[data-theme="dark"] .sky { opacity: 0.32; }
+.hero[data-sky="dawn"] .sky { background: linear-gradient(180deg, #FDE68A 0%, #FBCFE8 55%, #FDE68A 100%); }
+.hero[data-sky="day"] .sky { background: linear-gradient(180deg, #BAE6FD 0%, #E0F2FE 60%, #FEF9C3 100%); }
+.hero[data-sky="golden"] .sky { background: linear-gradient(180deg, #FDBA74 0%, #FDE68A 55%, #FED7AA 100%); }
+.hero[data-sky="dusk"] .sky { background: linear-gradient(180deg, #C084FC 0%, #F97316 55%, #FDBA74 100%); }
+.hero[data-sky="night"] .sky { background: linear-gradient(180deg, #0F172A 0%, #1E293B 60%, #334155 100%); }
+.sun-arc { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 1; }
 .sun {
   position: absolute; width: 54px; height: 54px; border-radius: 50%;
   background: radial-gradient(circle at 38% 35%, #FEF9C3 0%, #FDE047 35%, #F59E0B 70%, #EA580C 100%);
@@ -273,6 +280,32 @@ main { min-height: 100vh; }
   border-radius: 999px; padding: 0.15rem 0.55rem;
   transition: left 60s linear, bottom 60s linear;
 }
+.sun-controls {
+  position: relative; z-index: 2;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem;
+  margin-top: 1.5rem; padding: 0.5rem 0.75rem;
+  background: color-mix(in oklab, var(--background) 55%, transparent);
+  border: 1px solid color-mix(in oklab, var(--border) 40%, transparent);
+  border-radius: 999px; backdrop-filter: blur(4px);
+}
+.sun-btn {
+  border: 1px solid color-mix(in oklab, var(--border) 55%, transparent);
+  background: color-mix(in oklab, var(--background) 70%, transparent);
+  color: var(--text); border-radius: 999px; cursor: pointer;
+  font-size: 0.75rem; font-weight: 600; padding: 0.25rem 0.6rem; line-height: 1.4;
+}
+.sun-btn:hover { border-color: var(--primary); }
+.sun-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+#sun-slider { flex: 1 1 120px; min-width: 110px; accent-color: var(--primary); cursor: pointer; }
+.sun-clock { font-size: 0.8rem; font-weight: 700; font-variant-numeric: tabular-nums; min-width: 3.2rem; text-align: center; }
+.sun-chips { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.sun-chips button {
+  border: 1px solid color-mix(in oklab, var(--border) 55%, transparent);
+  background: transparent; color: var(--muted, #64748B); border-radius: 999px; cursor: pointer;
+  font-size: 0.72rem; font-weight: 600; padding: 0.2rem 0.55rem;
+}
+.sun-chips button:hover { color: var(--text); border-color: var(--primary); }
+.sun-phase { position: relative; z-index: 2; margin-top: 0.5rem; font-size: 0.78rem; color: var(--muted, #64748B); }
 
 /* ------------------------------------------------------------------ hero (home) */
 .hero { position: relative; overflow: hidden; }
