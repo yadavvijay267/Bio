@@ -16,6 +16,42 @@
   if ("scrollRestoration" in history) history.scrollRestoration = "manual";
   try { window.scrollTo(0, 0); } catch (e) { /* no-op */ }
 
+  /* ------------------------------------------------ hero greeting by time of day */
+  (function heroGreeting() {
+    var el = document.getElementById("hero-greeting");
+    if (!el) return;
+    var h = new Date().getHours();
+    var g;
+    if (h >= 5 && h < 12) g = "Good morning";
+    else if (h >= 12 && h < 17) g = "Good afternoon";
+    else if (h >= 17 && h < 21) g = "Good evening";
+    else g = "Good night";
+    el.textContent = g + ", I am";
+  })();
+
+  /* ------------------------------------------------ weather theme (Open-Meteo code -> theme name) */
+  function weatherThemeName(code) {
+    if (code === 0 || code === 1) return "sunny";
+    if (code === 2 || code === 3) return "cloudy";
+    if (code === 45 || code === 48) return "foggy";
+    if (code === 51 || code === 53 || code === 55 || code === 56 || code === 57 ||
+        code === 61 || code === 63 || code === 65 || code === 66 || code === 67 ||
+        code === 80 || code === 81 || code === 82) return "rainy";
+    if (code === 71 || code === 73 || code === 75 || code === 77 || code === 85 || code === 86) return "snowy";
+    if (code === 95 || code === 96 || code === 99) return "storm";
+    return null;
+  }
+  function applyWeatherTheme(code) {
+    var t = weatherThemeName(code);
+    if (t) {
+      document.documentElement.setAttribute("data-weather", t);
+      try { localStorage.setItem("vijay267-weather", t); } catch (e) { /* storage unavailable */ }
+    } else {
+      document.documentElement.removeAttribute("data-weather");
+      try { localStorage.removeItem("vijay267-weather"); } catch (e) { /* storage unavailable */ }
+    }
+  }
+
   /* ------------------------------------------------ theme toggle */
   var themeBtn = document.getElementById("theme-toggle");
   function currentTheme() {
@@ -190,31 +226,93 @@
       if (!weatherEl) return;
       if (w === null) {
         weatherEl.innerHTML = '<span class="muted">Weather unavailable right now</span>';
+        document.documentElement.removeAttribute("data-weather");
         return;
       }
+      applyWeatherTheme(w.code);
       var info = weatherInfo(w.code);
       var placeStr = place.name +
         (place.admin1 ? ", " + place.admin1 : "") +
         (place.country ? ", " + place.country : "");
+      var sunStr = "";
+      if (w.sunrise && w.sunset) {
+        sunStr = ' · <span class="muted">🌅 ' + fmtSunTime(w.sunrise) + ' · 🌇 ' + fmtSunTime(w.sunset) + '</span>';
+        updateSun(w.sunrise, w.sunset);
+      }
       weatherEl.innerHTML =
         info.icon + ' <span class="temp">' + Math.round(w.temp) + '°C</span> · ' + info.label +
         ' · <span class="muted">' + placeStr + ' · Humidity ' + w.humidity + '% · Wind ' +
-        Math.round(w.wind) + ' km/h</span>';
+        Math.round(w.wind) + ' km/h</span>' + sunStr;
     }
+
+    /* ------------------------------------------------ sun & moon arc (time-based) */
+    var sunTimes = null; // { sunrise: Date, sunset: Date }
+    function fmtSunTime(iso) {
+      var d = new Date(iso);
+      if (isNaN(d.getTime())) return iso;
+      return d.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
+    }
+    function updateSun(sunriseIso, sunsetIso) {
+      var sunEl = document.getElementById("sun");
+      var labelEl = document.getElementById("sun-label");
+      if (!sunEl || !labelEl) return;
+      if (sunriseIso && sunsetIso) {
+        sunTimes = { sunrise: new Date(sunriseIso), sunset: new Date(sunsetIso) };
+      }
+      if (!sunTimes) {
+        // Fallback until the weather fetch returns: 6 AM sunrise, 6 PM sunset.
+        var today = new Date();
+        sunTimes = {
+          sunrise: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 6, 0, 0),
+          sunset: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 18, 0, 0)
+        };
+      }
+      var now = new Date();
+      var sr = sunTimes.sunrise, ss = sunTimes.sunset;
+      var isDay = now >= sr && now < ss;
+      var frac, label, cls;
+      if (isDay) {
+        frac = (now - sr) / (ss - sr);
+        cls = frac < 0.18 ? "dawn" : (frac > 0.82 ? "dusk" : "");
+        label = "🌇 Sunset " + fmtSunTime(ss);
+      } else {
+        // Night arc: moon rises at sunset, sets at next sunrise.
+        var nextSr = new Date(sr);
+        if (now >= ss) nextSr.setDate(nextSr.getDate() + 1);
+        var nightStart = now >= ss ? ss : new Date(sr.getTime() - 24 * 60 * 60 * 1000);
+        var nightEnd = now >= ss ? nextSr : sr;
+        frac = (now - nightStart) / (nightEnd - nightStart);
+        cls = "moon";
+        label = "🌅 Sunrise " + fmtSunTime(nextSr);
+      }
+      frac = Math.max(0, Math.min(1, frac));
+      var leftPct = 8 + frac * 84;
+      var bottomPct = 6 + Math.sin(frac * Math.PI) * 58;
+      sunEl.style.left = leftPct + "%";
+      sunEl.style.bottom = bottomPct + "%";
+      sunEl.className = "sun" + (cls ? " " + cls : "");
+      labelEl.style.left = leftPct + "%";
+      labelEl.style.bottom = Math.max(0, bottomPct - 13) + "%";
+      labelEl.textContent = label;
+    }
+    updateSun(null, null);
+    setInterval(function () { updateSun(null, null); }, 60000);
 
     function loadWeather() {
       if (!weatherEl) return;
       weatherEl.innerHTML = '<span class="muted">Loading weather…</span>';
       fetch("https://api.open-meteo.com/v1/forecast?latitude=" + place.latitude +
         "&longitude=" + place.longitude +
-        "&current=temperature_2m,weather_code,relative_humidity_2m,wind_speed_10m&timezone=auto")
+        "&current=temperature_2m,weather_code,relative_humidity_2m,wind_speed_10m&daily=sunrise,sunset&timezone=auto")
         .then(function (r) { if (!r.ok) throw new Error("weather fetch failed"); return r.json(); })
         .then(function (d) {
           renderWeather({
             temp: d.current.temperature_2m,
             code: d.current.weather_code,
             humidity: d.current.relative_humidity_2m,
-            wind: d.current.wind_speed_10m
+            wind: d.current.wind_speed_10m,
+            sunrise: d.daily && d.daily.sunrise && d.daily.sunrise[0],
+            sunset: d.daily && d.daily.sunset && d.daily.sunset[0]
           });
         })
         .catch(function () { renderWeather(null); });
@@ -264,6 +362,27 @@
       );
     }
   }
+
+  /* ------------------------------------------------ weather theme on pages without the live strip */
+  (function weatherThemeInit() {
+    if (document.getElementById("live-status")) return; // index.html: the strip sets it
+    function fetchTheme(lat, lng) {
+      fetch("https://api.open-meteo.com/v1/forecast?latitude=" + lat +
+        "&longitude=" + lng + "&current=weather_code&timezone=auto")
+        .then(function (r) { if (!r.ok) throw new Error("weather fetch failed"); return r.json(); })
+        .then(function (d) { applyWeatherTheme(d.current.weather_code); })
+        .catch(function () { /* leave the default theme */ });
+    }
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        function (pos) { fetchTheme(pos.coords.latitude, pos.coords.longitude); },
+        function () { fetchTheme(28.5355, 77.391); },
+        { timeout: 10000, maximumAge: 600000 }
+      );
+    } else {
+      fetchTheme(28.5355, 77.391);
+    }
+  })();
 
   /* ------------------------------------------------ particle network background */
   var canvas = document.getElementById("bg-canvas");
@@ -369,6 +488,117 @@
             ctx.fill();
           }
         }
+        drawWx(now);
+      }
+
+      /* ---------- weather live wallpaper (rain / snow / sun / storm / clouds / fog / stars) */
+      var wx = [];
+      var wxKind = "";
+      var flashUntil = 0;
+      var nextFlash = 0;
+      function wxColor() {
+        var w = document.documentElement.dataset.weather || "";
+        var dark = document.documentElement.dataset.theme === "dark";
+        if (w === "rainy" || w === "storm") return "147,197,253";
+        if (w === "snowy") return "255,255,255";
+        if (w === "sunny") return dark ? "255,255,255" : "251,191,36";
+        if (w === "cloudy") return "148,163,184";
+        if (w === "foggy") return "203,213,225";
+        return lineRgb;
+      }
+      function buildWx() {
+        var w = document.documentElement.dataset.weather || "";
+        var dark = document.documentElement.dataset.theme === "dark";
+        var kind = w + (dark ? "-dark" : "-light");
+        if (kind === wxKind) return;
+        wxKind = kind;
+        wx = [];
+        var cw = canvas.width, ch = canvas.height;
+        if (!cw || !ch) return;
+        var i;
+        if (w === "rainy" || w === "storm") {
+          for (i = 0; i < 70; i++) wx.push({ x: Math.random() * cw, y: Math.random() * ch, len: 10 + Math.random() * 12, sp: 9 + Math.random() * 8 });
+        } else if (w === "snowy") {
+          for (i = 0; i < 55; i++) wx.push({ x: Math.random() * cw, y: Math.random() * ch, r: 1.5 + Math.random() * 2, sp: 0.5 + Math.random() * 1, ph: Math.random() * 6.28 });
+        } else if (w === "sunny") {
+          if (dark) {
+            for (i = 0; i < 45; i++) wx.push({ x: Math.random() * cw, y: Math.random() * ch, r: 0.8 + Math.random() * 1.4, ph: Math.random() * 6.28, sp: 0 });
+          } else {
+            for (i = 0; i < 28; i++) wx.push({ x: Math.random() * cw, y: Math.random() * ch, r: 2 + Math.random() * 2.5, sp: 0.3 + Math.random() * 0.5 });
+          }
+        } else if (w === "cloudy") {
+          for (i = 0; i < 16; i++) wx.push({ x: Math.random() * cw, y: Math.random() * ch, r: 40 + Math.random() * 60, sp: 0.15 + Math.random() * 0.35 });
+        } else if (w === "foggy") {
+          for (i = 0; i < 12; i++) wx.push({ x: Math.random() * cw, y: Math.random() * ch, r: 80 + Math.random() * 80, sp: 0.08 + Math.random() * 0.2 });
+        }
+      }
+      function drawWx(now) {
+        var w = document.documentElement.dataset.weather || "";
+        if (!w || reduced) return;
+        buildWx();
+        var cw = canvas.width, ch = canvas.height;
+        var dark = document.documentElement.dataset.theme === "dark";
+        var rgb = wxColor();
+        var i, p;
+        if (w === "rainy" || w === "storm") {
+          ctx.strokeStyle = "rgba(" + rgb + ",0.45)";
+          ctx.lineWidth = 1;
+          for (i = 0; i < wx.length; i++) {
+            p = wx[i];
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p.x - 2, p.y + p.len);
+            ctx.stroke();
+            p.y += p.sp; p.x -= 0.6;
+            if (p.y > ch) { p.y = -p.len; p.x = Math.random() * (cw + 40); }
+          }
+          if (w === "storm") {
+            if (now > nextFlash) { flashUntil = now + 120; nextFlash = now + 4000 + Math.random() * 5000; }
+            if (now < flashUntil) { ctx.fillStyle = "rgba(255,255,255,0.12)"; ctx.fillRect(0, 0, cw, ch); }
+          }
+        } else if (w === "snowy") {
+          ctx.fillStyle = "rgba(" + rgb + ",0.85)";
+          for (i = 0; i < wx.length; i++) {
+            p = wx[i];
+            ctx.beginPath();
+            ctx.arc(p.x + Math.sin(now / 900 + p.ph) * 12, p.y, p.r, 0, 2 * Math.PI);
+            ctx.fill();
+            p.y += p.sp;
+            if (p.y > ch + 4) { p.y = -4; p.x = Math.random() * cw; }
+          }
+        } else if (w === "sunny") {
+          if (dark) {
+            for (i = 0; i < wx.length; i++) {
+              p = wx[i];
+              var a = 0.35 + 0.35 * Math.abs(Math.sin(now / 700 + p.ph));
+              ctx.fillStyle = "rgba(255,255,255," + a.toFixed(2) + ")";
+              ctx.beginPath();
+              ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
+              ctx.fill();
+            }
+          } else {
+            ctx.fillStyle = "rgba(" + rgb + ",0.55)";
+            for (i = 0; i < wx.length; i++) {
+              p = wx[i];
+              ctx.beginPath();
+              ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
+              ctx.fill();
+              p.y -= p.sp;
+              if (p.y < -6) { p.y = ch + 6; p.x = Math.random() * cw; }
+            }
+          }
+        } else if (w === "cloudy" || w === "foggy") {
+          var alpha = w === "cloudy" ? 0.07 : 0.05;
+          ctx.fillStyle = "rgba(" + rgb + "," + alpha + ")";
+          for (i = 0; i < wx.length; i++) {
+            p = wx[i];
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
+            ctx.fill();
+            p.x += p.sp;
+            if (p.x - p.r > cw) { p.x = -p.r; p.y = Math.random() * ch; }
+          }
+        }
       }
 
       function loop(now) {
@@ -380,7 +610,7 @@
         var r = canvas.getBoundingClientRect();
         target = { x: e.clientX - r.left, y: e.clientY - r.top };
       }
-      function onResize() { build(); }
+      function onResize() { wxKind = ""; build(); }
 
       build();
       if (reduced) { draw(performance.now()); }

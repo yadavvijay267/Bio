@@ -1,6 +1,6 @@
 {
-  "versionCode": 6,
-  "versionName": "1.5",
+  "versionCode": 9,
+  "versionName": "1.8",
   "apkUrl": "https://bio.vijayyadav.workers.dev/downloads/vijay-bio.apk",
   "notes": "Hybrid: works offline too. Loads the live site when online, bundled copy when offline."
 }
